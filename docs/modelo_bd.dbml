@@ -1,0 +1,76 @@
+// Modelo de datos – Sistema de gestión para taller de reparación automotriz
+// Pegue este código en https://dbdiagram.io y exporte la imagen (Export > PNG)
+
+Project ReparacionAutomotriz {
+  database_type: 'PostgreSQL'
+  Note: '4 entidades de negocio (modelos, vehiculos, repuestos, reparaciones) + seguridad (usuarios, roles) + tabla intermedia N:M (repuestos_modelos)'
+}
+
+Table roles {
+  id_rol bigint [pk, increment]
+  nombre_rol varchar(20) [not null, unique, note: 'ADMINISTRADOR | MECANICO']
+}
+
+Table usuarios {
+  id_usuario bigint [pk, increment]
+  nombre varchar(60) [not null]
+  apellido varchar(60) [not null]
+  telefono varchar(20) [not null]
+  email varchar(100) [not null, unique, note: 'Se usa para iniciar sesión']
+  clave varchar(60) [not null, note: 'Hash BCrypt (RN-12)']
+  estado_usu boolean [not null, default: true, note: 'true = activo, false = dado de baja']
+  id_rol bigint [not null, ref: > roles.id_rol]
+}
+
+Table modelos {
+  id_modelo bigint [pk, increment]
+  nombre_modelo varchar(100) [not null]
+  marca varchar(60) [not null]
+  estado_modelo boolean [not null, default: true, note: 'RN-11']
+
+  indexes {
+    (marca, nombre_modelo) [unique, name: 'uk_modelo_marca_nombre', note: 'RN-04']
+  }
+}
+
+Table vehiculos {
+  id_vehiculo bigint [pk, increment]
+  placa varchar(7) [not null, unique, note: 'Formato ABC-123 (RN-01)']
+  color_placa varchar(10) [not null, note: 'AMARILLA | BLANCA (RN-02)']
+  nombre_dueno varchar(100) [not null]
+  documento_dueno varchar(20) [not null]
+  telefono_dueno varchar(20) [not null]
+  estado_vehiculo boolean [not null, default: true, note: 'RN-11']
+  id_modelo bigint [not null, ref: > modelos.id_modelo]
+}
+
+Table repuestos {
+  id_repuesto bigint [pk, increment]
+  nombre varchar(100) [not null]
+  descripcion varchar(500)
+  precio numeric(12,2) [not null, note: 'Pesos colombianos, > 0 (RN-06)']
+  codigo_ean varchar(13) [not null, unique, note: '13 dígitos (RN-05)']
+  stock integer [not null, note: '>= 0 (RN-06)']
+  imagen varchar(200) [note: 'URL o ruta de la imagen de referencia']
+  estado_repuesto boolean [not null, default: true, note: 'RN-11']
+}
+
+Table repuestos_modelos {
+  id_repuesto bigint [not null, ref: > repuestos.id_repuesto]
+  id_modelo bigint [not null, ref: > modelos.id_modelo]
+
+  indexes {
+    (id_repuesto, id_modelo) [pk]
+  }
+  Note: 'Tabla intermedia de la relación muchos a muchos repuesto–modelo (RN-07)'
+}
+
+Table reparaciones {
+  id_reparacion bigint [pk, increment]
+  fecha date [not null]
+  tipo varchar(30) [not null, note: 'MANTENIMIENTO_PREVENTIVO | REPARACION_CORRECTIVA | REVISION | OTRO (RN-09)']
+  estado varchar(15) [not null, default: 'EN_PROCESO', note: 'EN_PROCESO | TERMINADO | CANCELADO (RN-08)']
+  observaciones varchar(500)
+  id_vehiculo bigint [not null, ref: > vehiculos.id_vehiculo]
+  id_usuario bigint [not null, ref: > usuarios.id_usuario, note: 'Mecánico responsable (RN-10)']
+}
