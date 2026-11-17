@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale.language}"
+      th:fragment="layout(titulo, activePage, contenido)">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- titulo es una CLAVE de messages_*.properties -->
+    <title th:text="#{${titulo}} + ' - ' + #{app.name}">Taller</title>
+    <link rel="stylesheet" th:href="@{/css/variables.css}">
+    <link rel="stylesheet" th:href="@{/css/layout.css}">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <script th:src="@{/js/theme.js}"></script>
+</head>
+<body>
+<div class="app-shell">
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <span class="brand-title" th:text="#{app.name}">Taller</span>
+            <span class="brand-subtitle" th:text="#{app.subtitle}">Reparación automotriz</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a th:href="@{/}" class="nav-item" th:classappend="${activePage == 'home'} ? 'active'">
+                <i class="bi bi-house-door"></i><span th:text="#{nav.home}">Inicio</span>
+            </a>
+            <a th:href="@{/modelos}" class="nav-item" th:classappend="${activePage == 'modelos'} ? 'active'">
+                <i class="bi bi-car-front"></i><span th:text="#{nav.modelos}">Modelos</span>
+            </a>
+        </nav>
+
+        <!-- Selector de idioma (i18n): ?lang=es | ?lang=en lo procesa LocaleChangeInterceptor -->
+        <div class="lang-switch" th:attr="aria-label=#{lang.label}">
+            <i class="bi bi-translate"></i>
+            <a href="?lang=es" class="lang-option" th:classappend="${#locale.language == 'es'} ? 'active'"
+               th:text="#{lang.es}">Español</a>
+            <a href="?lang=en" class="lang-option" th:classappend="${#locale.language == 'en'} ? 'active'"
+               th:text="#{lang.en}">English</a>
+        </div>
+
+        <!-- Modo oscuro y claro: los textos traducidos se pasan a theme.js con data-* -->
+        <button type="button" id="theme-toggle" class="theme-toggle"
+                th:title="#{theme.title}"
+                th:attr="data-label-dark=#{theme.dark},data-label-light=#{theme.light}">
+            <i class="bi bi-moon"></i><span th:text="#{theme.dark}">Modo oscuro</span>
+        </button>
+    </aside>
+
+    <main class="main-content">
+        <!-- successMessage y errorMessage llegan como CLAVES desde el controlador -->
+        <div th:if="${successMessage}" class="alert alert-success" th:text="#{${successMessage}}"></div>
+        <div th:if="${errorMessage}" class="alert alert-danger" th:text="#{${errorMessage}}"></div>
+        <th:block th:replace="${contenido}"></th:block>
+    </main>
+</div>
+</body>
+</html>

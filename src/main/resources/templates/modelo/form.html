@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/layout :: layout(${title}, 'modelos', ~{::div.page-content})}">
+<body>
+<div class="page-content">
+    <header class="page-header">
+        <div>
+            <p class="eyebrow" th:text="#{catalogo}">Catálogo</p>
+            <h1 class="page-title" th:text="#{${title}}">Formulario</h1>
+        </div>
+        <a th:href="@{/modelos}" class="btn-secondary"><i class="bi bi-arrow-left"></i> <span th:text="#{accion.volver}">Volver al listado</span></a>
+    </header>
+
+    <section class="card">
+        <form th:action="@{${formAction}}" th:object="${modelo}" method="post">
+            <div class="form-group">
+                <label for="marca" th:text="#{modelo.marca}">Marca</label>
+                <input type="text" id="marca" th:field="*{marca}" maxlength="60">
+                <small class="field-error" th:if="${#fields.hasErrors('marca')}" th:errors="*{marca}"></small>
+            </div>
+
+            <div class="form-group">
+                <label for="nombreModelo" th:text="#{modelo.nombre}">Nombre del modelo</label>
+                <input type="text" id="nombreModelo" th:field="*{nombreModelo}" maxlength="100">
+                <small class="field-error" th:if="${#fields.hasErrors('nombreModelo')}" th:errors="*{nombreModelo}"></small>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn"><i class="bi bi-check-circle"></i> <span th:text="#{accion.guardar}">Guardar</span></button>
+                <a th:href="@{/modelos}" class="btn-secondary" th:text="#{accion.cancelar}">Cancelar</a>
+            </div>
+        </form>
+    </section>
+</div>
+</body>
+</html>

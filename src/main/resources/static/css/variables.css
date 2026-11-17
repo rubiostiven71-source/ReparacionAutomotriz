@@ -1,0 +1,37 @@
+:root {
+    --bg-app: #f4f6f9;
+    --bg-card: #ffffff;
+    --bg-sidebar: #1f2a44;
+    --text-primary: #1d2433;
+    --text-secondary: #64708a;
+    --text-on-sidebar: #dfe5f2;
+    --border: #dde2ec;
+    --accent: #2f6fed;
+    --accent-hover: #1f56c4;
+    --success: #1e7a46;
+    --success-bg: #e3f5ea;
+    --danger: #b3261e;
+    --danger-bg: #fdeceb;
+    --neutral: #5b6475;
+    --neutral-bg: #eceff4;
+    --radius: 10px;
+}
+
+/* Modo oscuro: se activa con <html data-theme="dark"> (ver js/theme.js) */
+[data-theme="dark"] {
+    --bg-app: #12161f;
+    --bg-card: #1b212d;
+    --bg-sidebar: #0d1118;
+    --text-primary: #e6e9f0;
+    --text-secondary: #9aa4b8;
+    --text-on-sidebar: #dfe5f2;
+    --border: #2c3443;
+    --accent: #5b8cff;
+    --accent-hover: #7aa2ff;
+    --success: #5fd08f;
+    --success-bg: #173526;
+    --danger: #ff8a80;
+    --danger-bg: #3a1c1a;
+    --neutral: #b3bccb;
+    --neutral-bg: #2a3140;
+}

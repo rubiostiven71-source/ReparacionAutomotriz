@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/layout :: layout('nav.home', 'home', ~{::div.page-content})}">
+<body>
+<div class="page-content">
+    <header class="page-header">
+        <div>
+            <p class="eyebrow" th:text="#{index.eyebrow}">Taller de reparación automotriz</p>
+            <h1 class="page-title" th:text="#{index.title}">Sistema de gestión del taller</h1>
+        </div>
+    </header>
+    <section class="card">
+        <p th:text="#{index.text}">Administra modelos, vehículos, repuestos y reparaciones en un solo lugar.</p>
+        <a th:href="@{/modelos}" class="btn"><i class="bi bi-car-front"></i> <span th:text="#{index.goModelos}">Ir a modelos</span></a>
+    </section>
+</div>
+</body>
+</html>

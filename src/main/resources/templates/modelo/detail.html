@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/layout :: layout(${title}, 'modelos', ~{::div.page-content})}">
+<body>
+<div class="page-content">
+    <header class="page-header">
+        <div>
+            <p class="eyebrow" th:text="#{catalogo}">Catálogo</p>
+            <h1 class="page-title" th:text="#{${title}}">Detalle</h1>
+        </div>
+        <a th:href="@{/modelos}" class="btn-secondary"><i class="bi bi-arrow-left"></i> <span th:text="#{accion.volver}">Volver al listado</span></a>
+    </header>
+
+    <section class="card">
+        <dl class="detail-list">
+            <dt th:text="#{modelo.marca}">Marca</dt><dd th:text="${modelo.marca}">Marca</dd>
+            <dt th:text="#{modelo.columna.modelo}">Modelo</dt><dd th:text="${modelo.nombreModelo}">Modelo</dd>
+            <dt th:text="#{modelo.estado}">Estado</dt>
+            <dd>
+                <span th:if="${modelo.estadoModelo}" class="badge badge-success" th:text="#{estado.activo}">Activo</span>
+                <span th:unless="${modelo.estadoModelo}" class="badge badge-neutral" th:text="#{estado.baja}">Dado de baja</span>
+            </dd>
+        </dl>
+        <div class="form-actions">
+            <a th:href="@{/modelos/{id}/edit(id=${modelo.idModelo})}" class="btn"><i class="bi bi-pencil"></i> <span th:text="#{accion.editar}">Editar</span></a>
+        </div>
+    </section>
+</div>
+</body>
+</html>
